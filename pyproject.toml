@@ -1,0 +1,37 @@
+[project]
+name = "locutor"
+version = "0.1.0"
+description = "App web segura de texto-a-voz (TTS) en español con sherpa-onnx"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "jinja2",
+    "python-multipart",
+    "sqlalchemy>=2.0",
+    "argon2-cffi",
+    "itsdangerous",
+    "pydantic>=2",
+    "pydantic-settings",
+    "pyyaml",
+    "num2words",
+    "soundfile",
+    "numpy",
+    "python-docx",
+    "pypdf",
+    "sherpa-onnx",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["app"]

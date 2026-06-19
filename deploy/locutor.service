@@ -1,0 +1,32 @@
+# systemd unit para Linux. Copiar a /etc/systemd/system/locutor.service
+# Ajusta User/Group y las rutas si no usas /opt/locutor.
+#
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now locutor
+#   sudo systemctl status locutor
+#   journalctl -u locutor -f      # logs
+
+[Unit]
+Description=Locutor TTS (texto a voz en español)
+After=network.target
+
+[Service]
+Type=simple
+User=locutor
+Group=locutor
+WorkingDirectory=/opt/locutor
+EnvironmentFile=/opt/locutor/.env
+# UN solo proceso (sin --workers): el modelo y el estado son globales en memoria.
+ExecStart=/opt/locutor/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=3
+
+# Endurecimiento
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/locutor/data
+
+[Install]
+WantedBy=multi-user.target

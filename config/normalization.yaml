@@ -1,0 +1,41 @@
+# Reglas de normalización de texto (pipeline ordenado).
+# Editable sin tocar código. El orden de las secciones es el orden de aplicación:
+#   1) abbreviations  2) word_replacements  3) [moneda/porcentaje/números]  4) punctuation
+
+# Reemplazo de abreviaturas (coincidencia con punto incluido).
+abbreviations:
+  "Sr.": "señor"
+  "Sra.": "señora"
+  "Srta.": "señorita"
+  "Dr.": "doctor"
+  "Dra.": "doctora"
+  "D.": "don"
+  "Dña.": "doña"
+  "Prof.": "profesor"
+  "Av.": "avenida"
+  "Avda.": "avenida"
+  "c/": "calle"
+  "núm.": "número"
+  "pág.": "página"
+  "tel.": "teléfono"
+  "Ud.": "usted"
+  "Uds.": "ustedes"
+
+# Reemplazo de palabras/abreviaturas sin punto (coincidencia por palabra completa).
+word_replacements:
+  "etc": "etcétera"
+  "aprox": "aproximadamente"
+  "EEUU": "Estados Unidos"
+
+# Transformaciones de puntuación.
+punctuation:
+  parentheses_to_commas: true   # "(...)" -> ", ...,"
+  collapse_repeated: true        # "!!!" -> "!", "..." se conserva como puntos suspensivos
+
+# Configuración numérica/moneda.
+numbers:
+  currency_symbol: "€"
+  currency_singular: "euro"
+  currency_plural: "euros"
+  cents_singular: "céntimo"
+  cents_plural: "céntimos"

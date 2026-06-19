@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Locutor{% endblock %}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  {% if user %}
+  <header class="topbar">
+    <span class="brand">🎙️ Locutor</span>
+    <form method="post" action="/logout" class="logout-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <span class="user">{{ user.username }}</span>
+      <button type="submit" class="btn-link">Salir</button>
+    </form>
+  </header>
+  {% endif %}
+  {% block body %}{% endblock %}
+</body>
+</html>

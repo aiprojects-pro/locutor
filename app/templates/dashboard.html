@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Locutor{% endblock %}
+{% block body %}
+<div class="container">
+  <div class="hero">
+    <h1>Documento a audio</h1>
+    <p>Sube un PDF o Word y descárgalo locutado en español.</p>
+  </div>
+
+  <form id="upload-form" class="panel" autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <!-- Paso 1: archivos -->
+    <label class="dropzone" id="dropzone">
+      <input type="file" id="files" name="files" multiple accept=".pdf,.docx" hidden>
+      <div class="dz-icon">↑</div>
+      <div class="dz-text">Arrastra tus archivos o <span>haz clic para elegir</span></div>
+      <small>PDF o Word · hasta {{ max_files }} archivos ({{ max_mb }} MB c/u)</small>
+      <div class="dz-files" id="dz-files"></div>
+    </label>
+
+    <!-- Paso 2: voz y velocidad -->
+    <div class="row">
+      <label class="field">
+        <span>Voz</span>
+        <select name="voice">
+          {% for v in voices %}
+          <option value="{{ v.key }}" {% if v.default %}selected{% endif %}>{{ v.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label class="field">
+        <span>Velocidad</span>
+        <select name="speed">
+          <option value="0.9">Lenta</option>
+          <option value="1.0" selected>Normal</option>
+          <option value="1.15">Rápida</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Paso 3: generar -->
+    <button type="submit" class="btn" id="submit-btn">Generar audio</button>
+    <p id="form-error" class="error" hidden></p>
+  </form>
+
+  <div class="panel result" id="result" {% if not jobs %}hidden{% endif %}>
+    <h2>Audios</h2>
+    <div id="results-list">
+      {% for job in jobs %}
+      <div class="result-row-wrap" data-job-id="{{ job.id }}" data-status="{{ job.status }}">
+        <div class="result-row">
+          <span class="result-name">{{ job.source_name }}</span>
+          <span class="result-state"></span>
+          <a class="btn-download" href="{{ job.download_url }}" {% if not job.download_url %}hidden{% endif %}>Descargar</a>
+        </div>
+        <div class="bar"><span style="width: {{ (job.progress * 100)|int }}%"></span></div>
+        {% if job.download_url %}<audio controls preload="none" src="{{ job.download_url }}"></audio>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

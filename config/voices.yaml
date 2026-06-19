@@ -1,0 +1,38 @@
+# Catálogo de voces seleccionables en la app.
+# Cada entrada apunta a una carpeta dentro de models/ y a un locutor (sid).
+# 'model_dir' se resuelve bajo MODELS_ROOT (por defecto ./models).
+# Varias entradas pueden compartir el mismo model_dir con distinto sid
+# (p. ej. Sharvard tiene un locutor femenino y otro masculino).
+
+default: sharvard-f
+
+voices:
+  - key: sharvard-f
+    label: "🇪🇸 España · Sharvard (femenina)"
+    model_dir: vits-piper-es_ES-sharvard-medium
+    sid: 1
+
+  - key: sharvard-m
+    label: "🇪🇸 España · Sharvard (masculina)"
+    model_dir: vits-piper-es_ES-sharvard-medium
+    sid: 0
+
+  - key: davefx
+    label: "🇪🇸 España · Davefx (masculina)"
+    model_dir: vits-piper-es_ES-davefx-medium
+    sid: 0
+
+  - key: css10
+    label: "🇪🇸 España · CSS10 (grave)"
+    model_dir: vits-coqui-es-css10
+    sid: 0
+
+  - key: daniela
+    label: "🇦🇷 Argentina · Daniela (femenina)"
+    model_dir: vits-piper-es_AR-daniela-high
+    sid: 0
+
+  - key: claude
+    label: "🇲🇽 México · Claude (alta calidad)"
+    model_dir: vits-piper-es_MX-claude-high
+    sid: 0

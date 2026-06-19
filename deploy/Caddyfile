@@ -1,0 +1,20 @@
+# Reverse proxy con HTTPS automático (Let's Encrypt) para Locutor.
+# Sustituye tu-dominio.com por tu dominio real (con DNS apuntando al servidor).
+# Caddy termina TLS y reenvía a la app (un solo uvicorn) en 127.0.0.1:8000.
+#
+#   Arranque:  caddy run --config /ruta/al/Caddyfile
+#   (o como servicio del sistema; ver DEPLOY.md)
+
+tu-dominio.com {
+    encode zstd gzip
+
+    # Límite de cuerpo (coincide con MAX_TOTAL_UPLOAD_BYTES de .env).
+    request_body {
+        max_size 60MB
+    }
+
+    reverse_proxy 127.0.0.1:8000 {
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
