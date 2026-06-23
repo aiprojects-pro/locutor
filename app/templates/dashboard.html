@@ -7,7 +7,7 @@
     <p>Sube un PDF o Word y descárgalo locutado en español.</p>
   </div>
 
-  <form id="upload-form" class="panel" autocomplete="off">
+  <form id="upload-form" class="panel" method="post" action="/upload" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
     <!-- Paso 1: archivos -->
@@ -61,4 +61,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/app.js" defer></script>
 {% endblock %}
