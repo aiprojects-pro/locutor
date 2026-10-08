@@ -1,0 +1,24 @@
+Metadata-Version: 2.4
+Name: locutor
+Version: 0.1.0
+Summary: App web segura de texto-a-voz (TTS) en español con sherpa-onnx
+Requires-Python: >=3.12
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: jinja2
+Requires-Dist: python-multipart
+Requires-Dist: sqlalchemy>=2.0
+Requires-Dist: argon2-cffi
+Requires-Dist: itsdangerous
+Requires-Dist: pydantic>=2
+Requires-Dist: pydantic-settings
+Requires-Dist: pyyaml
+Requires-Dist: num2words
+Requires-Dist: soundfile
+Requires-Dist: numpy
+Requires-Dist: python-docx
+Requires-Dist: pypdf
+Requires-Dist: sherpa-onnx
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: httpx; extra == "dev"

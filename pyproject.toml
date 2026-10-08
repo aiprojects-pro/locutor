@@ -2,7 +2,7 @@
 name = "locutor"
 version = "0.1.0"
 description = "App web segura de texto-a-voz (TTS) en español con sherpa-onnx"
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.12"
 dependencies = [
     "fastapi",
     "uvicorn[standard]",

@@ -4,7 +4,7 @@
 # Varias entradas pueden compartir el mismo model_dir con distinto sid
 # (p. ej. Sharvard tiene un locutor femenino y otro masculino).
 
-default: sharvard-f
+default: css10
 
 voices:
   - key: sharvard-f

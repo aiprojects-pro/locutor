@@ -119,15 +119,20 @@ class JobManager:
                 self._chunk_pool.submit(self.engine.generate, voice_key, chunk, speed)
                 for chunk in chunks
             ]
-            results = [None] * len(futures)
-            for i, fut in enumerate(futures):
-                results[i] = fut.result(timeout=self.settings.per_chunk_timeout_s)
-                job.done_chunks += 1
+
+            # Se entregan en orden al escritor de WAV y se suelta cada
+            # fragmento tras escribirlo: la memoria no crece con el documento.
+            def ordered_results():
+                for i, fut in enumerate(futures):
+                    samples = fut.result(timeout=self.settings.per_chunk_timeout_s)
+                    futures[i] = None
+                    job.done_chunks += 1
+                    yield samples
 
             out_dir = self.settings.work_dir / job.id
             mp3_path = out_dir / "audio.mp3"
             assemble_mp3(
-                results,
+                ordered_results(),
                 self.engine.sample_rate_for(voice_key),
                 mp3_path,
                 silence_ms=self.settings.silence_ms,

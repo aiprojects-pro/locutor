@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import shutil
 import subprocess
+from collections.abc import Iterable
 from pathlib import Path
 
 import numpy as np
@@ -56,18 +57,40 @@ def wav_to_mp3(wav_path: Path, mp3_path: Path, bitrate: str = "128k") -> Path:
     return mp3_path
 
 
+def write_wav_chunks(
+    chunks: Iterable[np.ndarray], sample_rate: int, path: Path, silence_ms: int
+) -> Path:
+    """Escribe los fragmentos en un WAV (PCM_16) a medida que llegan.
+
+    Equivale a write_wav(merge_with_silence(...)) pero sin tener todo el audio
+    en memoria: acepta un generador y solo retiene un fragmento cada vez.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    silence = np.zeros(int(sample_rate * silence_ms / 1000), dtype=np.float32)
+    with sf.SoundFile(
+        str(path), mode="w", samplerate=sample_rate, channels=1, subtype="PCM_16"
+    ) as f:
+        for i, c in enumerate(chunks):
+            if i > 0:
+                f.write(silence)
+            f.write(np.asarray(c, dtype=np.float32))
+    return path
+
+
 def assemble_mp3(
-    chunks: list[np.ndarray],
+    chunks: Iterable[np.ndarray],
     sample_rate: int,
     out_mp3: Path,
     silence_ms: int,
     bitrate: str,
 ) -> Path:
-    """Pipeline completo: fragmentos -> WAV temporal -> MP3."""
-    merged = merge_with_silence(chunks, sample_rate, silence_ms)
+    """Pipeline completo: fragmentos -> WAV temporal -> MP3.
+
+    `chunks` puede ser un generador: se consume en streaming.
+    """
     wav_tmp = out_mp3.with_suffix(".wav")
     try:
-        write_wav(merged, sample_rate, wav_tmp)
+        write_wav_chunks(chunks, sample_rate, wav_tmp, silence_ms)
         wav_to_mp3(wav_tmp, out_mp3, bitrate)
     finally:
         wav_tmp.unlink(missing_ok=True)

@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+app/__init__.py
+app/config.py
+app/jobs.py
+app/logging_conf.py
+app/main.py
+locutor.egg-info/PKG-INFO
+locutor.egg-info/SOURCES.txt
+locutor.egg-info/dependency_links.txt
+locutor.egg-info/requires.txt
+locutor.egg-info/top_level.txt
+tests/test_chunk.py
+tests/test_extract.py
+tests/test_normalize.py
